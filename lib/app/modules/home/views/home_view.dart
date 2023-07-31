@@ -94,18 +94,24 @@ class HomeView extends GetView<HomeController> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        child: const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
-                            Text('',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white)),
-                            Text('Bidang',
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white)),
+                            Obx(() => Text(
+                                'Halo, ${controller.userData.value.data == null ? '' : controller.userData.value.data!.user.name}',
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.white))),
+                            Obx(() => Text(
+                                controller.userData.value.data == null
+                                    ? ''
+                                    : controller.userData.value.data!.kelas
+                                            .description ??
+                                        '',
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.white))),
                           ],
                         ),
                       ),
@@ -114,26 +120,26 @@ class HomeView extends GetView<HomeController> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: const BoxDecoration(
-                            color: Color(0xff444487),
+                            color: Color(0xffDD9426),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          child: const Row(children: [
-                            Image(
+                          child: Row(children: [
+                            const Image(
                                 image: AssetImage('assets/images/lokasi.png')),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Lokasi saat ini : ',
+                                  const Text('Lokasi anda: ',
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 16)),
-                                  Text('asdsadas',
-                                      style: TextStyle(
+                                  Obx(() => Text(controller.address.value,
+                                      style: const TextStyle(
                                         color: Colors.white,
-                                      ))
+                                      )))
                                 ],
                               ),
                             )
@@ -141,135 +147,230 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                       const SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Container(
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              color: Color(0xffEEEEEE),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/mapel.png',
+                              width: 30,
+                              height: 30,
                             ),
-                            child: Column(
-                              children: [
-                                Card(
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20)),
-                                  ),
-                                  color: const Color(0xffEEEEEE),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      'assets/images/dl.png',
-                                      height: 40,
-                                    ),
-                                    title: const Text(
-                                      "Dinas Luar",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    trailing: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xff444487)),
-                                    onTap: () {
-                                      Get.toNamed('/user-dinas-luar');
-                                    },
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 1,
-                                  thickness: 2,
-                                ),
-                                Card(
-                                  color: const Color(0xffEEEEEE),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      'assets/images/izin.png',
-                                      height: 40,
-                                    ),
-                                    title: const Text(
-                                      "Izin / Sakit",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    trailing: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xff444487)),
-                                    onTap: () {
-                                      Get.toNamed('/user-izin');
-                                    },
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 1,
-                                  thickness: 2,
-                                ),
-                                Card(
-                                  color: const Color(0xffEEEEEE),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      'assets/images/laporan.png',
-                                      height: 40,
-                                    ),
-                                    title: const Text(
-                                      "Laporan Kegiatan",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    trailing: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xff444487)),
-                                    onTap: () {
-                                      Get.toNamed('/user-laporan-kegiatan');
-                                    },
-                                  ),
-                                ),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 1,
-                                  thickness: 2,
-                                ),
-                                Card(
-                                  color: const Color(0xffEEEEEE),
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20)),
-                                  ),
-                                  child: ListTile(
-                                    leading: Image.asset(
-                                      'assets/images/rekap.png',
-                                      height: 40,
-                                    ),
-                                    title: const Text(
-                                      "Rekap Absensi",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    trailing: const Icon(
-                                        Icons.arrow_forward_ios,
-                                        color: Color(0xff444487)),
-                                    onTap: () {
-                                      Get.toNamed('/rekap-user');
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )),
+                            const Text('Mata Pelajaran',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold))
+                          ],
+                        ),
                       ),
+                      Obx(() => controller.userData.value.data == null
+                          ? Container()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Container(
+                                width: Get.width,
+                                height: 70 *
+                                    controller
+                                        .userData.value.data!.subject.length
+                                        .toDouble(),
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Color(0xffEEEEEE),
+                                ),
+                                child: ListView.builder(
+                                    itemCount:
+                                        controller.userData.value.data == null
+                                            ? 0
+                                            : controller.userData.value.data!
+                                                .subject.length,
+                                    itemBuilder: (context, index) {
+                                      return Card(
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        color: const Color(0xffD9D9D9),
+                                        child: ListTile(
+                                          isThreeLine: false,
+                                          leading: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: const Color(0xff071759),
+                                                image: const DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/mapel.png'),
+                                                    scale: 0.5)),
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                          title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  controller.userData.value
+                                                              .data ==
+                                                          null
+                                                      ? ''
+                                                      : controller
+                                                          .userData
+                                                          .value
+                                                          .data!
+                                                          .subject[index]
+                                                          .subject!
+                                                          .name,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  controller.userData.value
+                                                              .data ==
+                                                          null
+                                                      ? ''
+                                                      : controller
+                                                          .userData
+                                                          .value
+                                                          .data!
+                                                          .subject[index]
+                                                          .startTime,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ]),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Color(0xff071759),
+                                          ),
+                                          onTap: () {
+                                            Get.toNamed('/presensi',
+                                                arguments: controller
+                                                    .userData
+                                                    .value
+                                                    .data!
+                                                    .subject[index]);
+                                          },
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/icons/mapel.png',
+                              width: 30,
+                              height: 30,
+                            ),
+                            const Text('Tugas',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold))
+                          ],
+                        ),
+                      ),
+                      Obx(() => controller.userData.value.data == null
+                          ? Container()
+                          : Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Container(
+                                width: Get.width,
+                                height: 70 *
+                                    controller
+                                        .userData.value.data!.subject.length
+                                        .toDouble(),
+                                padding: const EdgeInsets.all(5),
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                  color: Color(0xffEEEEEE),
+                                ),
+                                child: ListView.builder(
+                                    itemCount:
+                                        controller.userData.value.data == null
+                                            ? 0
+                                            : controller.userData.value.data!
+                                                .subject.length,
+                                    itemBuilder: (context, index) {
+                                      return Card(
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        color: const Color(0xffD9D9D9),
+                                        child: ListTile(
+                                          isThreeLine: false,
+                                          leading: Container(
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: const Color(0xff071759),
+                                                image: const DecorationImage(
+                                                    image: AssetImage(
+                                                        'assets/images/mapel.png'),
+                                                    scale: 0.5)),
+                                            width: 40,
+                                            height: 40,
+                                          ),
+                                          title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  controller.userData.value
+                                                              .data ==
+                                                          null
+                                                      ? ''
+                                                      : controller
+                                                          .userData
+                                                          .value
+                                                          .data!
+                                                          .subject[index]
+                                                          .subject!
+                                                          .name,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  controller.userData.value
+                                                              .data ==
+                                                          null
+                                                      ? ''
+                                                      : controller
+                                                          .userData
+                                                          .value
+                                                          .data!
+                                                          .subject[index]
+                                                          .startTime,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
+                                              ]),
+                                          trailing: const Icon(
+                                            Icons.arrow_forward_ios,
+                                            color: Color(0xff071759),
+                                          ),
+                                          onTap: () {},
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            )),
                     ],
                   ),
                   Positioned(
