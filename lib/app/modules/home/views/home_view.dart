@@ -30,45 +30,32 @@ class HomeView extends GetView<HomeController> {
                           shape: BoxShape.circle,
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Obx(() => CachedNetworkImage(
-                                imageUrl:
-                                    'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              )),
-                        ),
+                            borderRadius: BorderRadius.circular(100),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                            )),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      const Center(
-                          child: Text('', style: TextStyle(fontSize: 20))),
-                      Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.person),
-                          title: const Text('Profile'),
-                          onTap: () {
-                            Get.toNamed('/profile');
-                          },
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          leading: const Icon(Icons.lock),
-                          title: const Text('Ubah Password'),
-                          onTap: () {},
-                        ),
-                      ),
+                      Obx(() => Center(
+                          child: Text(
+                              controller.userData.value.data?.user.name ?? '',
+                              style: const TextStyle(fontSize: 20)))),
                       Card(
                         child: ListTile(
                           leading: const Icon(Icons.exit_to_app),
                           title: const Text('Logout'),
-                          onTap: () {},
+                          onTap: () {
+                            controller.modalLogout();
+                          },
                         ),
                       ),
                     ],
@@ -165,7 +152,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                       Obx(() => controller.userData.value.data == null
-                          ? Container()
+                          ? const Text('Tidak Ada Mata Pelajaran')
                           : Padding(
                               padding:
                                   const EdgeInsets.only(left: 20, right: 20),
@@ -219,12 +206,13 @@ class HomeView extends GetView<HomeController> {
                                                           null
                                                       ? ''
                                                       : controller
-                                                          .userData
-                                                          .value
-                                                          .data!
-                                                          .subject[index]
-                                                          .subject!
-                                                          .name,
+                                                              .userData
+                                                              .value
+                                                              .data!
+                                                              .subject[index]
+                                                              .subject
+                                                              ?.name ??
+                                                          '',
                                                   style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
@@ -281,7 +269,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                       ),
                       Obx(() => controller.userData.value.data == null
-                          ? Container()
+                          ? const Text('Tidak Ada Tugas')
                           : Padding(
                               padding:
                                   const EdgeInsets.only(left: 20, right: 20),
@@ -289,7 +277,7 @@ class HomeView extends GetView<HomeController> {
                                 width: Get.width,
                                 height: 70 *
                                     controller
-                                        .userData.value.data!.subject.length
+                                        .userData.value.data!.assignment.length
                                         .toDouble(),
                                 padding: const EdgeInsets.all(5),
                                 decoration: const BoxDecoration(
@@ -298,11 +286,8 @@ class HomeView extends GetView<HomeController> {
                                   color: Color(0xffEEEEEE),
                                 ),
                                 child: ListView.builder(
-                                    itemCount:
-                                        controller.userData.value.data == null
-                                            ? 0
-                                            : controller.userData.value.data!
-                                                .subject.length,
+                                    itemCount: controller
+                                        .userData.value.data!.assignment.length,
                                     itemBuilder: (context, index) {
                                       return Card(
                                         shape: const RoundedRectangleBorder(
@@ -311,61 +296,62 @@ class HomeView extends GetView<HomeController> {
                                         ),
                                         color: const Color(0xffD9D9D9),
                                         child: ListTile(
-                                          isThreeLine: false,
-                                          leading: Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                color: const Color(0xff071759),
-                                                image: const DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/images/mapel.png'),
-                                                    scale: 0.5)),
-                                            width: 40,
-                                            height: 40,
-                                          ),
                                           title: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  controller.userData.value
-                                                              .data ==
-                                                          null
-                                                      ? ''
-                                                      : controller
-                                                          .userData
-                                                          .value
-                                                          .data!
-                                                          .subject[index]
-                                                          .subject!
-                                                          .name,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Flexible(
+                                                  child: Text(
+                                                    controller.userData.value
+                                                                .data ==
+                                                            null
+                                                        ? ''
+                                                        : controller
+                                                            .userData
+                                                            .value
+                                                            .data!
+                                                            .assignment[index]
+                                                            .subject
+                                                            .name,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 ),
-                                                Text(
-                                                  controller.userData.value
-                                                              .data ==
-                                                          null
-                                                      ? ''
-                                                      : controller
-                                                          .userData
-                                                          .value
-                                                          .data!
-                                                          .subject[index]
-                                                          .startTime,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                Flexible(
+                                                  child: Text(
+                                                    controller.userData.value
+                                                                .data ==
+                                                            null
+                                                        ? ''
+                                                        : controller.formatTime(
+                                                            controller
+                                                                .userData
+                                                                .value
+                                                                .data!
+                                                                .assignment[
+                                                                    index]
+                                                                .endDate),
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
                                                 )
                                               ]),
                                           trailing: const Icon(
                                             Icons.arrow_forward_ios,
                                             color: Color(0xff071759),
                                           ),
-                                          onTap: () {},
+                                          onTap: () {
+                                            Get.toNamed('/tugas-detail',
+                                                arguments: controller
+                                                    .userData
+                                                    .value
+                                                    .data!
+                                                    .assignment[index]
+                                                    .id);
+                                          },
                                         ),
                                       );
                                     }),

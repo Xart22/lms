@@ -17,7 +17,7 @@ class TakePhotoController extends GetxController {
 
   Future<void> cameraInit() async {
     var cameras = await availableCameras();
-    cameraController = CameraController(cameras[1], ResolutionPreset.max);
+    cameraController = CameraController(cameras[1], ResolutionPreset.medium);
 
     await cameraController
         .initialize()

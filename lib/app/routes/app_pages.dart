@@ -8,6 +8,10 @@ import '../modules/presensi/bindings/presensi_binding.dart';
 import '../modules/presensi/views/presensi_view.dart';
 import '../modules/take-photo/bindings/take_photo_binding.dart';
 import '../modules/take-photo/views/take_photo_view.dart';
+import '../modules/tugas/bindings/tugas_binding.dart';
+import '../modules/tugas/views/tugas_view.dart';
+import '../modules/tugas_detail/bindings/tugas_detail_binding.dart';
+import '../modules/tugas_detail/views/tugas_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -36,6 +40,16 @@ class AppPages {
       name: _Paths.TAKE_PHOTO,
       page: () => const TakePhotoView(),
       binding: TakePhotoBinding(),
+    ),
+    GetPage(
+      name: _Paths.TUGAS,
+      page: () => const TugasView(),
+      binding: TugasBinding(),
+    ),
+    GetPage(
+      name: _Paths.TUGAS_DETAIL,
+      page: () => const TugasDetailView(),
+      binding: TugasDetailBinding(),
     ),
   ];
 }

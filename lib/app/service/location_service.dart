@@ -22,6 +22,9 @@ class LocationService extends GetxService {
       .obs;
 
   getAdrres() async {
+    await location.getCurrentPosition(
+      locationSettings: locationSettings,
+    );
     List<geo.Placemark>? addres;
     try {
       await location
@@ -55,9 +58,24 @@ class LocationService extends GetxService {
       }
     }
 
-    await location.getCurrentPosition(
-      locationSettings: locationSettings,
-    );
+    if (permission == LocationPermission.deniedForever) {
+      await location.requestPermission();
+    }
+
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      serviceEnabled = await location.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        serviceEnabled = await location.openAppSettings();
+        if (!serviceEnabled) {
+          return this;
+        }
+      } else {
+        await location.getCurrentPosition(
+          locationSettings: locationSettings,
+        );
+      }
+    }
 
     return this;
   }

@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/home_response_model.dart';
 import '../../../service/api/home_provider.dart';
@@ -35,6 +37,10 @@ class HomeController extends GetxController {
     }
   }
 
+  String formatTime(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dateTime);
+  }
+
   void getlocation() async {
     locationData.value = await locationService.getCurrentLocation();
     address.value = await locationService.getAdrres();
@@ -42,6 +48,45 @@ class HomeController extends GetxController {
 
   void initLocationService() async {
     await locationService.init();
+  }
+
+  void modalLogout() {
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: const Color(0xff292C2A),
+        title: const Text('Logout', style: TextStyle(color: Colors.red)),
+        content: const Text('Apakah anda yakin ingin logout?',
+            style: TextStyle(color: Colors.white)),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: const Color(0xff292C2A),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(color: Colors.red),
+              ),
+            ),
+            onPressed: () {
+              Get.back();
+            },
+            child: const Text('Batal', style: TextStyle(color: Colors.red)),
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () async {
+              Get.back();
+              Get.offAllNamed('/login');
+            },
+            child: const Text('Ya', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
   }
 
   @override

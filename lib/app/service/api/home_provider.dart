@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -20,12 +18,12 @@ class HomeProvider {
         'Accept': 'application/json',
         'Authorization': 'Bearer $accestoken',
       });
+      print(response.body);
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return HomeResponseModel.fromJson(data);
+        return homeResponseModelFromJson(response.body);
       } else if (response.statusCode == 401) {
         await storage.remove('accestoken');
-        Get.snackbar('Session Expired', 'Please Login Again',
+        Get.snackbar('Session Habis', 'Silahkan Login Kembali',
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: Colors.red,
             colorText: Colors.white);
@@ -34,8 +32,9 @@ class HomeProvider {
       } else {
         return null;
       }
-    } catch (e) {
+    } catch (e, s) {
       print(e);
+      print(s);
       return null;
     }
   }
